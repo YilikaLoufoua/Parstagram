@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,7 +53,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
         TextView tvUsername;
@@ -68,19 +69,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            TextView tvUsername = itemView.findViewById(R.id.tvUsername);
-            ImageView ivOptions = itemView.findViewById(R.id.ivOptions);
-            ImageView ivPost = itemView.findViewById(R.id.ivPost);
-            ImageView ivHeart = itemView.findViewById(R.id.ivHeart);
-            ImageView ivComment = itemView.findViewById(R.id.ivComment);
-            ImageView ivDirect = itemView.findViewById(R.id.ivDirect);
-            ImageView ivSave = itemView.findViewById(R.id.ivSave);
-            TextView tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
+            ivOptions = itemView.findViewById(R.id.ivOptions);
+            ivPost = itemView.findViewById(R.id.ivPost);
+            ivHeart = itemView.findViewById(R.id.ivHeart);
+            ivComment = itemView.findViewById(R.id.ivComment);
+            ivDirect = itemView.findViewById(R.id.ivDirect);
+            ivSave = itemView.findViewById(R.id.ivSave);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
         }
 
         public void bind(Post post) {
             tvUsername.setText(post.getUser().toString());
-            Glide.with(context).load(post.getImage().getUrl()).into(ivPost);
+            tvDescription.setText(post.getDescription());
+            ParseFile image = post.getImage();
+            if (image != null) {
+                Glide.with(context).load(post.getImage().getUrl()).into(ivPost);
+            }
         }
     }
 }
